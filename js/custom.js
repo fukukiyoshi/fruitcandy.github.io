@@ -1,7 +1,7 @@
 (function () {
   function isHomePage() {
     var path = window.location.pathname.replace(/\/+$/, '/')
-    return path === '/' || path === '/index.html' || path === '/fruitcandy.github.io/'
+    return path === '/' || path === '/index.html'
   }
 
   function addVisitorCard() {
