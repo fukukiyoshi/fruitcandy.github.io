@@ -1,207 +1,257 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  
-  <title>Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>欢迎来到水果糖的世界🍬</title><meta name="author" content="水果糖🍬"><meta name="copyright" content="水果糖🍬"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta property="og:type" content="website">
+<meta property="og:title" content="欢迎来到水果糖的世界🍬">
+<meta property="og:url" content="https://fukukiyoshi.github.io/fruitcandy.github.io/index.html">
+<meta property="og:site_name" content="欢迎来到水果糖的世界🍬">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fukukiyoshi.github.io/fruitcandy.github.io/img/fruitcandy.jpg">
+<meta property="article:author" content="水果糖🍬">
 <meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
-  
-  
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
-
-<meta name="generator" content="Hexo 7.3.0"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
+<meta name="twitter:image" content="https://fukukiyoshi.github.io/fruitcandy.github.io/img/fruitcandy.jpg"><script type="application/ld+json"></script><link rel="shortcut icon" href="/fruitcandy.github.io/img/favicon.png"><link rel="canonical" href="https://fukukiyoshi.github.io/fruitcandy.github.io/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/fruitcandy.github.io/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
       
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
 
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/09/12/hello-world/" class="article-date">
-  <time class="dt-published" datetime="2026-09-12T04:04:03.010Z" itemprop="datePublished">2026-09-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/09/12/hello-world/">Hello World</a>
-    </h1>
-  
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
       
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2026/09/12/hello-world/" data-id="cmty0zwm100000ktw32606eqs" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-
-
-</section>
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
         
-          <aside id="sidebar">
-  
-    
-
-  
-    
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/09/">September 2026</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2026/09/12/hello-world/">Hello World</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
       
-      &copy; 2026 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
     
-
-
-<script src="/js/jquery-3.6.4.min.js"></script>
-
-
-
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/fruitcandy.github.io/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '欢迎来到水果糖的世界🍬',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'home'
+}</script><link rel="stylesheet" href="/fruitcandy.github.io/css/custom.css"><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/fruitcandy.github.io/img/fruitcandy.jpg" onerror="this.onerror=null;this.src='/fruitcandy.github.io/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/fruitcandy.github.io/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/fruitcandy.github.io/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/fruitcandy.github.io/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/fruitcandy.github.io/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/fruitcandy.github.io/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章归档</span></a></div><div class="menus_item"><a class="site-page" href="/fruitcandy.github.io/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/fruitcandy.github.io/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/fruitcandy.github.io/shuoshuo/"><i class="fa-fw fas fa-comment-dots"></i><span> 碎碎念</span></a></div><div class="menus_item"><a class="site-page" href="/fruitcandy.github.io/works/"><i class="fa-fw fas fa-palette"></i><span> 作品</span></a></div><div class="menus_item"><a class="site-page" href="/fruitcandy.github.io/link/"><i class="fa-fw fas fa-link"></i><span> 友链及网站导航</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(/fruitcandy.github.io/img/background.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/fruitcandy.github.io/"><span class="site-name">欢迎来到水果糖的世界🍬</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/fruitcandy.github.io/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/fruitcandy.github.io/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章归档</span></a></div><div class="menus_item"><a class="site-page" href="/fruitcandy.github.io/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/fruitcandy.github.io/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/fruitcandy.github.io/shuoshuo/"><i class="fa-fw fas fa-comment-dots"></i><span> 碎碎念</span></a></div><div class="menus_item"><a class="site-page" href="/fruitcandy.github.io/works/"><i class="fa-fw fas fa-palette"></i><span> 作品</span></a></div><div class="menus_item"><a class="site-page" href="/fruitcandy.github.io/link/"><i class="fa-fw fas fa-link"></i><span> 友链及网站导航</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="site-info"><h1 id="site-title">欢迎来到水果糖的世界🍬</h1><div id="site-subtitle"><span id="subtitle"></span></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="post_cover left"><a href="/fruitcandy.github.io/2024/12/14/%E5%BD%93%E6%88%91%E6%8A%8A%E9%98%85%E8%AF%BB%E9%9A%9C%E7%A2%8D%E8%AF%BE%E7%A8%8B%E4%BD%9C%E4%B8%9A%E6%90%AC%E8%BF%9B%E9%85%92%E5%90%A7/" title="当我把阅读障碍课程作业搬进酒吧"><img class="post-bg" src="/fruitcandy.github.io/img/notion/dyslexia-01.png" onerror="this.onerror=null;this.src='/fruitcandy.github.io/img/404.jpg'" alt="当我把阅读障碍课程作业搬进酒吧"></a></div><div class="recent-post-info"><a class="article-title" href="/fruitcandy.github.io/2024/12/14/%E5%BD%93%E6%88%91%E6%8A%8A%E9%98%85%E8%AF%BB%E9%9A%9C%E7%A2%8D%E8%AF%BE%E7%A8%8B%E4%BD%9C%E4%B8%9A%E6%90%AC%E8%BF%9B%E9%85%92%E5%90%A7/" title="当我把阅读障碍课程作业搬进酒吧">当我把阅读障碍课程作业搬进酒吧</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-12-13T16:00:00.000Z" title="发表于 2024-12-14 00:00:00">2024-12-14</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/fruitcandy.github.io/categories/%E6%96%87%E7%AB%A0/">文章</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/fruitcandy.github.io/categories/%E6%96%87%E7%AB%A0/%E8%AF%BE%E7%A8%8B%E8%AE%B0%E5%BD%95/">课程记录</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/fruitcandy.github.io/tags/%E5%9B%9E%E5%BF%86/">回忆</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/fruitcandy.github.io/tags/%E5%BF%83%E7%90%86/">心理</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/fruitcandy.github.io/tags/%E5%88%9B%E4%BD%9C/">创作</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/fruitcandy.github.io/tags/%E8%87%AA%E6%88%91%E6%8E%A2%E7%B4%A2/">自我探索</a></span></div><div class="content">为什么有必要记录这一次课程经历？我之前一直很难找到一个让我感到平衡的领域。一方面我希望可以追求真理，研究关于人类心理最底层的原理；另一方面我又不希望在数据处理和各种元素化的实验任务中远离“人”本身。 阅读障碍这门课让我首次找到了这种平衡感。我既能在这门课中探寻那些有趣的理论，还能够和人产生联结。在这门课上，我收获了知识静静地流进脑子里的快乐，也收获了应用知识、影响他人时带来的感动。 在干预小朋友和办讲座的过程中，我也获得了相当多的成就感，同时认识了很多为此困扰的家长，以及同样对这个领域感兴趣的同学。超级大满足！ 在这里我学到的最有用的知识是？我觉得最有意思的是阅读障碍的种种缺陷表征和汉字的字源。关于语音、语素方面的基本知识在普通心理学课上已经学过一次了，那个时候只觉得很无聊，这门课上却有着完全不同的感受。 没想到从阅读障碍的视角来看，原本觉得稀疏平常的语言组成部分还可以这么复杂又奇妙。有种拿着放大镜观察熟悉的事物，发现了完全不一样的模样的奇异感。 还有汉字的演变过程。对于我们这些早就把汉字书写和阅读自动化了的人，面对汉字各个部件的含义和起源可能真的没有太多思考。但是当我试图从阅读...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/fruitcandy.github.io/2024/09/25/%E8%B0%83%E8%8A%82%E6%95%88%E5%BA%94%E6%A6%82%E8%BF%B0/" title="调节效应概述"><img class="post-bg" src="/fruitcandy.github.io/img/notion/moderation-02.png" onerror="this.onerror=null;this.src='/fruitcandy.github.io/img/404.jpg'" alt="调节效应概述"></a></div><div class="recent-post-info"><a class="article-title" href="/fruitcandy.github.io/2024/09/25/%E8%B0%83%E8%8A%82%E6%95%88%E5%BA%94%E6%A6%82%E8%BF%B0/" title="调节效应概述">调节效应概述</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-09-24T16:00:00.000Z" title="发表于 2024-09-25 00:00:00">2024-09-25</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/fruitcandy.github.io/categories/%E6%96%87%E7%AB%A0/">文章</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/fruitcandy.github.io/categories/%E6%96%87%E7%AB%A0/%E5%BF%83%E7%90%86%E7%BB%9F%E8%AE%A1/">心理统计</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/fruitcandy.github.io/tags/%E5%BF%83%E7%90%86/">心理</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/fruitcandy.github.io/tags/%E5%88%9B%E4%BD%9C/">创作</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/fruitcandy.github.io/tags/%E5%8E%9F%E5%88%9B/">原创</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/fruitcandy.github.io/tags/%E7%BB%9F%E8%AE%A1/">统计</a></span></div><div class="content">写这篇概述的目的，一方面是因为上周汇报时因为时间限制，后面加速太多了，很多都没有讲清楚；另一方面是也想完整地把自己的知识输出成一个框架体系。 整体上还是基于方杰老师的《国内调节效应的方法学研究》这篇综述，后面也会不定期完善，补充其他相关文献。 这篇文章希望做到 理解调节效应的内涵 面对不同的数据类型，知道使用何种调节效应模型来相适配 对调节效应的发展脉络和未来研究方向有基本认识 重理解，轻操作  调节效应是什么？当自变量 X 与因变量 Y 的关系受到第三个变量 Z 的影响时，我们将变量 Z 称为调节变量。 调节变量既可能影响 X 与 Y 之间关系的方向，也可能影响关系的强度。比较形象的比喻是，调节变量就像调温水龙头一样，水就是自变量对因变量的影响。当调节变量取不同的值时，自变量对因变量的影响程度也会不一样。 这篇文献按照从显变量到潜变量，以及数据类型拓展这两条发展脉络，将调节效应分为了六大主题：  显变量的调节效应 潜变量的调节效应 多层数据的调节效应 基于两层回归模型的单层调节分析 纵向数据的调节效应 调节和中介的整合模型  显变量是啥？显变量的概念是相对于潜变量来说的，它们之...</div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/fruitcandy.github.io/img/fruitcandy.jpg" onerror="this.onerror=null;this.src='/fruitcandy.github.io/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">水果糖🍬</div><div class="author-info-description"></div><div class="site-data"><a href="/fruitcandy.github.io/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/fruitcandy.github.io/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/fruitcandy.github.io/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/fruitcandy.github.io/2024/12/14/%E5%BD%93%E6%88%91%E6%8A%8A%E9%98%85%E8%AF%BB%E9%9A%9C%E7%A2%8D%E8%AF%BE%E7%A8%8B%E4%BD%9C%E4%B8%9A%E6%90%AC%E8%BF%9B%E9%85%92%E5%90%A7/" title="当我把阅读障碍课程作业搬进酒吧"><img src="/fruitcandy.github.io/img/notion/dyslexia-01.png" onerror="this.onerror=null;this.src='/fruitcandy.github.io/img/404.jpg'" alt="当我把阅读障碍课程作业搬进酒吧"/></a><div class="content"><a class="title" href="/fruitcandy.github.io/2024/12/14/%E5%BD%93%E6%88%91%E6%8A%8A%E9%98%85%E8%AF%BB%E9%9A%9C%E7%A2%8D%E8%AF%BE%E7%A8%8B%E4%BD%9C%E4%B8%9A%E6%90%AC%E8%BF%9B%E9%85%92%E5%90%A7/" title="当我把阅读障碍课程作业搬进酒吧">当我把阅读障碍课程作业搬进酒吧</a><time datetime="2024-12-13T16:00:00.000Z" title="发表于 2024-12-14 00:00:00">2024-12-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/fruitcandy.github.io/2024/09/25/%E8%B0%83%E8%8A%82%E6%95%88%E5%BA%94%E6%A6%82%E8%BF%B0/" title="调节效应概述"><img src="/fruitcandy.github.io/img/notion/moderation-02.png" onerror="this.onerror=null;this.src='/fruitcandy.github.io/img/404.jpg'" alt="调节效应概述"/></a><div class="content"><a class="title" href="/fruitcandy.github.io/2024/09/25/%E8%B0%83%E8%8A%82%E6%95%88%E5%BA%94%E6%A6%82%E8%BF%B0/" title="调节效应概述">调节效应概述</a><time datetime="2024-09-24T16:00:00.000Z" title="发表于 2024-09-25 00:00:00">2024-09-25</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/fruitcandy.github.io/categories/%E6%96%87%E7%AB%A0/"><span class="card-category-list-name">文章</span><span class="card-category-list-count">2</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/fruitcandy.github.io/categories/%E6%96%87%E7%AB%A0/%E5%BF%83%E7%90%86%E7%BB%9F%E8%AE%A1/"><span class="card-category-list-name">心理统计</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/fruitcandy.github.io/categories/%E6%96%87%E7%AB%A0/%E8%AF%BE%E7%A8%8B%E8%AE%B0%E5%BD%95/"><span class="card-category-list-name">课程记录</span><span class="card-category-list-count">1</span></a></li></ul></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/fruitcandy.github.io/tags/%E5%8E%9F%E5%88%9B/" style="font-size: 1.1em; color: #999">原创</a> <a href="/fruitcandy.github.io/tags/%E7%BB%9F%E8%AE%A1/" style="font-size: 1.1em; color: #999">统计</a> <a href="/fruitcandy.github.io/tags/%E5%9B%9E%E5%BF%86/" style="font-size: 1.1em; color: #999">回忆</a> <a href="/fruitcandy.github.io/tags/%E5%88%9B%E4%BD%9C/" style="font-size: 1.5em; color: #99a9bf">创作</a> <a href="/fruitcandy.github.io/tags/%E5%BF%83%E7%90%86/" style="font-size: 1.5em; color: #99a9bf">心理</a> <a href="/fruitcandy.github.io/tags/%E8%87%AA%E6%88%91%E6%8E%A2%E7%B4%A2/" style="font-size: 1.1em; color: #999">自我探索</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/fruitcandy.github.io/archives/2024/12/">
+            <span class="card-archive-list-date">
+              十二月 2024
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/fruitcandy.github.io/archives/2024/09/">
+            <span class="card-archive-list-date">
+              九月 2024
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">2</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-09-14T03:11:00.087Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 水果糖🍬</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/fruitcandy.github.io/js/utils.js?v=5.7.0"></script><script src="/fruitcandy.github.io/js/main.js?v=5.7.0"></script><div class="js-pjax"><script>window.typedJSFn = {
+  init: str => {
+    window.typed = new Typed('#subtitle', Object.assign({
+      strings: str,
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50,
+    }, null))
+  },
+  run: subtitleType => {
+    if (true) {
+      if (typeof Typed === 'function') {
+        subtitleType()
+      } else {
+        btf.getScript('https://cdn.jsdelivr.net/npm/typed.js@3.0.0/dist/typed.umd.min.js').then(subtitleType)
+      }
+    } else {
+      subtitleType()
+    }
+  },
+  processSubtitle: (content, extraContents = []) => {
+    if (true) {
+      const sub = ["恭喜你,发现了一颗水果糖!","现在要来尝尝看吗？"].slice()
 
+      if (extraContents.length > 0) {
+        sub.unshift(...extraContents)
+      }
 
+      if (typeof content === 'string') {
+        sub.unshift(content)
+      } else if (Array.isArray(content)) {
+        sub.unshift(...content)
+      }
 
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
-</body>
-</html>
+      sub.length > 0 && typedJSFn.init(sub)
+    } else {
+      document.getElementById('subtitle').textContent = typeof content === 'string' ? content :
+        (Array.isArray(content) && content.length > 0 ? content[0] : '')
+    }
+  }
+}
+btf.addGlobalFn('pjaxSendOnce', () => { typed && typed.destroy() }, 'typedDestroy')
+</script><script>function subtitleType () {
+  typedJSFn.processSubtitle(["恭喜你,发现了一颗水果糖!","现在要来尝尝看吗？"])
+}
+typedJSFn.run(subtitleType)</script></div><script src="/fruitcandy.github.io/js/custom.js"></script><script async data-pjax src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

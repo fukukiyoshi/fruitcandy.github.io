@@ -1,0 +1,23 @@
+.home-visitor-card {
+  margin: 1rem 0 0;
+  padding: 1.1rem 1.25rem;
+  border-radius: 8px;
+  background: var(--card-bg);
+  box-shadow: var(--card-box-shadow);
+  color: var(--font-color);
+  text-align: center;
+  font-size: 1rem;
+}
+
+.home-visitor-card .visitor-number {
+  padding: 0 .28rem;
+  color: var(--theme-color);
+  font-weight: 700;
+}
+
+#article-container img {
+  display: block;
+  max-width: min(100%, 760px);
+  margin: 1rem auto;
+  border-radius: 8px;
+}
