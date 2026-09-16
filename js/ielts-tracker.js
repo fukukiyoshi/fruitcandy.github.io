@@ -1,60 +1,19 @@
 (function () {
   'use strict'
 
-  var STORAGE_KEY = 'ielts-tracker:e2263ef0-b8a0-4684-b273-3a6d33dd1836:v1'
   var MODULES = ['听力', '阅读', '写作', '口语']
-  var state = { goal: 7, records: [] }
+  var state = { goal: 7.5, records: [], advice: '' }
 
   function isTrackerPage() {
     return /^\/shuoshuo(?:\/|\/index\.html)?$/.test(window.location.pathname)
   }
 
-  function today() {
-    var date = new Date()
-    date.setMinutes(date.getMinutes() - date.getTimezoneOffset())
-    return date.toISOString().slice(0, 10)
-  }
-
-  function uid() {
-    return Date.now().toString(36) + Math.random().toString(36).slice(2, 8)
-  }
-
-  function loadLocalState() {
-    try {
-      var saved = JSON.parse(localStorage.getItem(STORAGE_KEY))
-      if (saved && Array.isArray(saved.records)) {
-        state.goal = Number(saved.goal) || 7
-        state.records = saved.records
-      }
-    } catch (error) {
-      console.warn('[IELTS tracker] 无法读取本地记录', error)
-    }
-  }
-
-  function loadState() {
-    loadLocalState()
-    return fetch('/data/ielts-records.json', { cache: 'no-cache' })
-      .then(function (response) {
-        if (!response.ok) throw new Error('HTTP ' + response.status)
-        return response.json()
-      })
-      .then(function (published) {
-        if (!published || !Array.isArray(published.records)) return
-        var merged = new Map()
-        published.records.forEach(function (record) { merged.set(record.id, record) })
-        state.records.forEach(function (record) { merged.set(record.id, record) })
-        state.records = Array.from(merged.values())
-        if (!localStorage.getItem(STORAGE_KEY) && Number(published.goal)) {
-          state.goal = Number(published.goal)
-        }
-      })
-      .catch(function (error) {
-        console.warn('[IELTS tracker] 无法读取公开记录，继续使用本地记录', error)
-      })
-  }
-
-  function saveState() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+  async function loadState() {
+    var response = await fetch('/data/ielts-records.json', { cache: 'no-cache' })
+    if (!response.ok) throw new Error('HTTP ' + response.status)
+    var published = await response.json()
+    if (!Array.isArray(published.records) || !Number.isFinite(published.goal)) throw new Error('Invalid study data')
+    state = { goal: published.goal, records: published.records, advice: published.advice || '' }
   }
 
   function escapeHtml(value) {
@@ -107,44 +66,30 @@
       '      <h2>雅思学习站</h2>',
       '      <p>今天的每一点练习，都在把目标变成坐标。</p>',
       '    </div>',
-      '    <button class="ielts-add-button" type="button" data-action="open-form"><i class="fa-solid fa-plus"></i> 记录今天</button>',
+      '    <span class="ielts-readonly">学习足迹 · 公开展示</span>',
       '  </header>',
       '  <div class="ielts-stat-grid">',
-      '    <article class="ielts-stat ielts-goal-card"><span>目标分数</span><strong data-stat="goal">7.0</strong><button type="button" data-action="edit-goal" aria-label="修改目标分数"><i class="fa-solid fa-pen"></i></button></article>',
+      '    <article class="ielts-stat ielts-goal-card"><span>目标分数</span><strong data-stat="goal">—</strong><small>总分目标</small></article>',
       '    <article class="ielts-stat"><span>最近测试</span><strong data-stat="latest">—</strong><small data-stat="latest-module">还没有分数记录</small></article>',
       '    <article class="ielts-stat"><span>累计学习</span><strong data-stat="minutes">0 分钟</strong><small data-stat="days">0 个学习日</small></article>',
       '    <article class="ielts-stat"><span>单词 / 套题</span><strong data-stat="practice">0 / 0</strong><small>累计完成</small></article>',
       '  </div>',
+      '  <div class="ielts-targets" data-targets></div>',
+      '  <div class="ielts-panel ielts-calendar-panel"><div class="ielts-panel-heading"><div><span>DAILY PRACTICE</span><h3>学习日历</h3></div><label>年份 <select class="ielts-year" aria-label="日历年份"></select></label></div><p data-calendar-summary></p><div class="ielts-calendar-scroll"><div class="ielts-calendar" data-calendar></div></div><div class="ielts-heat-legend"><span>未记录</span><i data-level="0"></i><i data-level="1"></i><span>1–29 分钟</span><i data-level="2"></i><span>30–59</span><i data-level="3"></i><span>60–119</span><i data-level="4"></i><span>≥120</span></div><p class="ielts-caption">同一天各模块时长相加；空白日期表示没有已发布的学习时长。</p></div>',
       '  <div class="ielts-panel ielts-chart-panel">',
       '    <div class="ielts-panel-heading"><div><span>成长轨迹</span><h3>模考分数趋势</h3></div><div class="ielts-legend"></div></div>',
       '    <div class="ielts-chart-wrap"><canvas class="ielts-chart" aria-label="雅思模考分数趋势图"></canvas><div class="ielts-chart-empty">记录一次带分数的练习后，这里会出现成长曲线。</div></div>',
       '  </div>',
       '  <div class="ielts-lower-grid">',
       '    <div class="ielts-panel ielts-advice-panel">',
-      '      <div class="ielts-panel-heading"><div><span>AI COACH</span><h3>明日学习建议</h3></div><button type="button" class="ielts-icon-button" data-action="refresh-advice" title="重新生成"><i class="fa-solid fa-wand-magic-sparkles"></i></button></div>',
+      '      <div class="ielts-panel-heading"><div><span>STUDY NOTES</span><h3>明日学习建议</h3></div></div>',
       '      <div class="ielts-advice" data-advice><p>添加学习记录后，我会根据你的投入与分数变化安排明天的练习。</p></div>',
       '    </div>',
       '    <div class="ielts-panel ielts-record-panel">',
-      '      <div class="ielts-panel-heading"><div><span>RECENT LOG</span><h3>最近记录</h3></div><button type="button" class="ielts-text-button" data-action="export">导出数据</button></div>',
+      '      <div class="ielts-panel-heading"><div><span>RECENT LOG</span><h3>最近记录</h3></div></div>',
       '      <div class="ielts-records" data-records></div>',
       '    </div>',
       '  </div>',
-      '  <dialog class="ielts-dialog">',
-      '    <form method="dialog" class="ielts-form">',
-      '      <div class="ielts-form-heading"><div><span>DAILY CHECK-IN</span><h3>记录今天的学习</h3></div><button type="button" data-action="close-form" aria-label="关闭"><i class="fa-solid fa-xmark"></i></button></div>',
-      '      <input type="hidden" name="id">',
-      '      <div class="ielts-form-grid">',
-      '        <label><span>日期</span><input required type="date" name="date"></label>',
-      '        <label><span>学习模块</span><select name="module">' + MODULES.map(function (name) { return '<option>' + name + '</option>' }).join('') + '</select></label>',
-      '        <label><span>学习时间（分钟）</span><input min="0" step="5" type="number" name="minutes" placeholder="例如 60"></label>',
-      '        <label><span>本次分数（可选）</span><input min="0" max="9" step="0.5" type="number" name="score" placeholder="例如 5.5"></label>',
-      '        <label><span>背单词（个）</span><input min="0" type="number" name="words" placeholder="例如 50"></label>',
-      '        <label><span>完成套题（套）</span><input min="0" step="0.5" type="number" name="sets" placeholder="例如 1"></label>',
-      '        <label class="ielts-form-note"><span>学习备注</span><textarea name="note" rows="3" maxlength="240" placeholder="今天卡在哪里？有什么新发现？"></textarea></label>',
-      '      </div>',
-      '      <div class="ielts-form-actions"><button type="button" class="ielts-secondary-button" data-action="close-form">取消</button><button type="submit" class="ielts-primary-button">保存记录</button></div>',
-      '    </form>',
-      '  </dialog>',
       '</section>'
     ].join('')
   }
@@ -154,99 +99,23 @@
     var article = document.querySelector('#article-container')
     if (!article) return
     article.insertAdjacentHTML('beforebegin', createMarkup())
-    bindEvents()
-    loadState().then(render)
-  }
-
-  function bindEvents() {
     var root = document.querySelector('.ielts-tracker')
-    var dialog = root.querySelector('.ielts-dialog')
-    var form = root.querySelector('.ielts-form')
-
-    root.addEventListener('click', function (event) {
-      var button = event.target.closest('[data-action]')
-      if (!button) return
-      var action = button.dataset.action
-      if (action === 'open-form') openForm()
-      if (action === 'close-form') dialog.close()
-      if (action === 'edit-goal') editGoal()
-      if (action === 'delete') deleteRecord(button.dataset.id)
-      if (action === 'edit') editRecord(button.dataset.id)
-      if (action === 'refresh-advice') renderAdvice(true)
-      if (action === 'export') exportData()
-    })
-
-    form.addEventListener('submit', function (event) {
-      event.preventDefault()
-      var data = new FormData(form)
-      var id = data.get('id') || uid()
-      var old = state.records.find(function (record) { return record.id === id })
-      var record = {
-        id: id,
-        date: data.get('date'),
-        module: data.get('module'),
-        minutes: numberOrZero(data.get('minutes')),
-        score: data.get('score') === '' ? null : numberOrZero(data.get('score')),
-        words: numberOrZero(data.get('words')),
-        sets: numberOrZero(data.get('sets')),
-        note: String(data.get('note') || '').trim(),
-        createdAt: old ? old.createdAt : new Date().toISOString()
-      }
-      state.records = state.records.filter(function (item) { return item.id !== id })
-      state.records.push(record)
-      saveState()
-      dialog.close()
+    loadState().then(function () {
+      if (!root.isConnected) return
+      setupCalendar()
       render()
+    }).catch(function () {
+      if (root.isConnected) root.innerHTML = '<div class="ielts-panel" role="status">学习记录暂时无法加载，请稍后刷新。</div>'
     })
-
-    window.addEventListener('resize', debounce(drawChart, 160))
-  }
-
-  function openForm(record) {
-    var form = document.querySelector('.ielts-form')
-    form.reset()
-    form.elements.id.value = record ? record.id : ''
-    form.elements.date.value = record ? record.date : today()
-    if (record) {
-      ;['module', 'minutes', 'score', 'words', 'sets', 'note'].forEach(function (key) {
-        form.elements[key].value = record[key] == null ? '' : record[key]
-      })
-    }
-    var dialog = document.querySelector('.ielts-dialog')
-    if (typeof dialog.showModal === 'function') dialog.showModal()
-    else dialog.setAttribute('open', '')
-  }
-
-  function editRecord(id) {
-    var record = state.records.find(function (item) { return item.id === id })
-    if (record) openForm(record)
-  }
-
-  function deleteRecord(id) {
-    if (!window.confirm('要删除这条学习记录吗？')) return
-    state.records = state.records.filter(function (record) { return record.id !== id })
-    saveState()
-    render()
-  }
-
-  function editGoal() {
-    var value = window.prompt('你的雅思目标总分是多少？（0–9，支持 0.5 分）', state.goal)
-    if (value == null) return
-    var goal = Number(value)
-    if (!Number.isFinite(goal) || goal < 0 || goal > 9 || goal * 2 % 1 !== 0) {
-      window.alert('请输入 0–9 之间、以 0.5 为步长的分数。')
-      return
-    }
-    state.goal = goal
-    saveState()
-    render()
   }
 
   function render() {
     renderStats()
     renderRecords()
     requestAnimationFrame(drawChart)
-    renderAdvice(false)
+    renderTargets()
+    renderCalendar()
+    renderAdvice()
   }
 
   function renderStats() {
@@ -284,7 +153,6 @@
         (record.score ? '<strong class="ielts-score">' + numberOrZero(record.score).toFixed(1) + '</strong>' : '') + '</div>' +
         '<p>' + escapeHtml(facts.join(' · ') || '完成了一次学习') + '</p>' +
         (record.note ? '<small>' + escapeHtml(record.note) + '</small>' : '') + '</div>' +
-        '<div class="ielts-log-actions"><button data-action="edit" data-id="' + escapeHtml(record.id) + '" title="编辑"><i class="fa-solid fa-pen"></i></button><button data-action="delete" data-id="' + escapeHtml(record.id) + '" title="删除"><i class="fa-solid fa-trash-can"></i></button></div>' +
         '</article>'
     }).join('')
   }
@@ -358,7 +226,7 @@
     var goalY = yAt(state.goal)
     ctx.beginPath(); ctx.moveTo(pad.left, goalY); ctx.lineTo(width - pad.right, goalY); ctx.stroke()
     ctx.setLineDash([])
-    ctx.fillText('目标 ' + state.goal.toFixed(1), Math.max(pad.left, width - 74), goalY - 7)
+    ctx.fillText('总分目标 ' + state.goal.toFixed(1), Math.max(pad.left, width - 104), goalY - 7)
 
     var labelStep = Math.max(1, Math.ceil(dates.length / 5))
     dates.forEach(function (date, index) {
@@ -402,36 +270,80 @@
     return result.slice(0, 3)
   }
 
-  function renderAdvice(forceRemote) {
+  function renderAdvice() {
     var container = document.querySelector('[data-advice]')
-    var button = document.querySelector('[data-action="refresh-advice"]')
-    var advice = localAdvice()
-    container.innerHTML = '<ul>' + advice.map(function (item) { return '<li>' + escapeHtml(item) + '</li>' }).join('') + '</ul><small>根据当前浏览器中的学习记录生成</small>'
-    if (!forceRemote || !state.records.length) return
-    var endpoint = window.IELTS_TRACKER_API_URL || '/api/ielts-advice'
-    button.classList.add('is-loading')
-    fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ goal: state.goal, records: sortedRecords().slice(-30) })
-    }).then(function (response) {
-      if (!response.ok) throw new Error('HTTP ' + response.status)
-      return response.json()
-    }).then(function (result) {
-      if (!result.advice) throw new Error('返回内容为空')
-      container.innerHTML = '<p>' + escapeHtml(result.advice).replace(/\n/g, '<br>') + '</p><small>由 AI 教练根据最近 30 条记录生成</small>'
-    }).catch(function (error) {
-      console.warn('[IELTS tracker] AI 建议暂不可用，已保留本地建议', error)
-    }).finally(function () { button.classList.remove('is-loading') })
+    container.innerHTML = state.advice
+      ? '<p>' + escapeHtml(state.advice).replace(/\n/g, '<br>') + '</p><small>已发布的学习建议</small>'
+      : '<ul>' + localAdvice().map(function (item) { return '<li>' + escapeHtml(item) + '</li>' }).join('') + '</ul><small>根据公开记录生成的规则建议</small>'
   }
 
-  function exportData() {
-    var blob = new Blob([JSON.stringify({ exportedAt: new Date().toISOString(), goal: state.goal, records: sortedRecords() }, null, 2)], { type: 'application/json' })
-    var link = document.createElement('a')
-    link.href = URL.createObjectURL(blob)
-    link.download = 'ielts-study-log-' + today() + '.json'
-    link.click()
-    URL.revokeObjectURL(link.href)
+  // A planning allocation, not a prediction: receptive skills +0.5,
+  // productive skills -0.5. Half-band ranges allow room for improvement.
+  function targetRanges() {
+    return MODULES.map(function (module, index) {
+      var low = Math.max(0, Math.min(9, state.goal + (index < 2 ? 0.5 : -0.5)))
+      return { module: module, low: low, high: Math.min(9, low + 0.5) }
+    })
+  }
+
+  function renderTargets() {
+    var scores = latestScores()
+    var ranges = targetRanges()
+    document.querySelector('[data-targets]').innerHTML = ranges.map(function (target) {
+      return '<article class="ielts-stat"><span>' + target.module + ' · 参考目标</span><strong>' +
+        target.low.toFixed(1) + '–' + target.high.toFixed(1) + '</strong><small>最近测试：' +
+        (scores[target.module] == null ? '暂无' : scores[target.module].toFixed(1)) + '</small></article>'
+    }).join('') + '<p class="ielts-caption">按听读较高、写说稳步达标的策略分配；范围下限组合平均为 ' +
+      (ranges.reduce(function (sum, target) { return sum + target.low }, 0) / 4).toFixed(1) +
+      '。这是备考目标，不是成绩预测；写作、口语尚无测试数据。<a href="https://ielts.org/take-a-test/your-results/ielts-scoring-in-detail" target="_blank" rel="noopener">总分计分规则</a></p>'
+  }
+
+  function dateKey(date) { return date.toISOString().slice(0, 10) }
+
+  function dailyMinutes() {
+    return state.records.reduce(function (days, record) {
+      days[record.date] = (days[record.date] || 0) + Math.max(0, numberOrZero(record.minutes))
+      return days
+    }, {})
+  }
+
+  function heatLevel(minutes) {
+    return minutes >= 120 ? 4 : minutes >= 60 ? 3 : minutes >= 30 ? 2 : minutes > 0 ? 1 : 0
+  }
+
+  function setupCalendar() {
+    var currentYear = Number(new Intl.DateTimeFormat('en', { timeZone: 'Asia/Shanghai', year: 'numeric' }).format(new Date()))
+    var years = Array.from(new Set([currentYear].concat(state.records.map(function (r) { return Number(r.date.slice(0, 4)) })))).sort(function (a, b) { return b - a })
+    var select = document.querySelector('.ielts-year')
+    select.innerHTML = years.map(function (year) { return '<option>' + year + '</option>' }).join('')
+    select.value = String(currentYear)
+    select.addEventListener('change', renderCalendar)
+  }
+
+  function renderCalendar() {
+    var year = Number(document.querySelector('.ielts-year').value)
+    var totals = dailyMinutes(), minutes = 0, days = 0
+    var weekdays = ['一', '二', '三', '四', '五', '六', '日']
+    var html = ''
+    for (var month = 0; month < 12; month++) {
+      html += '<section class="ielts-month"><h4>' + (month + 1) + '月</h4><div class="ielts-month-grid">'
+      html += weekdays.map(function (day) { return '<span class="ielts-weekday">' + day + '</span>' }).join('')
+      var offset = (new Date(Date.UTC(year, month, 1)).getUTCDay() + 6) % 7
+      for (var blank = 0; blank < offset; blank++) html += '<span></span>'
+      var count = new Date(Date.UTC(year, month + 1, 0)).getUTCDate()
+      for (var day = 1; day <= count; day++) {
+        var key = dateKey(new Date(Date.UTC(year, month, day)))
+        var value = totals[key] || 0
+        minutes += value
+        if (value > 0) days++
+        var label = key + '：' + (value > 0 ? formatMinutes(value) : '未记录学习时长')
+        html += '<span class="ielts-heat-day" tabindex="0" data-date="' + key + '" data-level="' +
+          heatLevel(value) + '" data-tooltip="' + label + '" aria-label="' + label + '">' + day + '</span>'
+      }
+      html += '</div></section>'
+    }
+    document.querySelector('[data-calendar]').innerHTML = html
+    document.querySelector('[data-calendar-summary]').textContent = year + ' 年 · ' + days + ' 个学习日 · ' + formatMinutes(minutes)
   }
 
   function debounce(fn, wait) {
@@ -442,7 +354,9 @@
     }
   }
 
+  window.addEventListener('resize', debounce(drawChart, 160))
   window.addEventListener('load', mount)
+  if (document.readyState !== 'loading') mount()
   document.addEventListener('pjax:complete', mount)
   document.addEventListener('shuoshuo:rendered', mount)
   new MutationObserver(function () {

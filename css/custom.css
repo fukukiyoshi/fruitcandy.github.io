@@ -190,6 +190,30 @@
 }
 
 /* IELTS learning tracker — only mounted on the shuoshuo page */
+.ielts-readonly { color: var(--ielts-muted); font-size: .8rem; }
+.ielts-targets { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 16px 0; }
+.ielts-caption { color: var(--ielts-muted); font-size: .75rem; line-height: 1.8; margin: 10px 0; }
+.ielts-targets > .ielts-caption { grid-column: 1 / -1; }
+.ielts-calendar-panel { margin-bottom: 16px; }
+.ielts-year { background: var(--card-bg); color: var(--ielts-ink); border: 1px solid var(--ielts-line); padding: 5px 10px; border-radius: 8px; }
+.ielts-calendar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.ielts-month h4 { margin: 8px 0; color: var(--ielts-ink); }
+.ielts-month-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
+.ielts-weekday { text-align: center; color: var(--ielts-muted); font-size: .65rem; }
+.ielts-heat-day { position: relative; display: grid; place-items: center; aspect-ratio: 1; min-height: 20px; border-radius: 4px; font-size: .65rem; background: rgba(128,136,155,.12); color: var(--ielts-ink); }
+.ielts-tracker [data-level="1"] { background: #d6e7fa; color: #24374f; }
+.ielts-tracker [data-level="2"] { background: #9fc3f1; color: #192e48; }
+.ielts-tracker [data-level="3"] { background: #558cdf; color: #fff; }
+.ielts-tracker [data-level="4"] { background: #3059ae; color: #fff; }
+.ielts-heat-day:hover::after, .ielts-heat-day:focus::after { content: attr(data-tooltip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); z-index: 5; width: 170px; padding: 7px; border-radius: 6px; background: #243044; color: #fff; font-size: 11px; text-align: center; pointer-events: none; }
+.ielts-heat-day:nth-child(7n + 1)::after { left: 0; transform: none; }
+.ielts-heat-day:nth-child(7n)::after { left: auto; right: 0; transform: none; }
+.ielts-heat-day:focus-visible { outline: 2px solid var(--ielts-blue); outline-offset: 2px; }
+.ielts-heat-legend { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 18px; font-size: .65rem; color: var(--ielts-muted); }
+.ielts-heat-legend i { width: 14px; height: 14px; border-radius: 3px; background: rgba(128,136,155,.12); }
+.ielts-tracker .ielts-log-item { grid-template-columns: 48px 1fr; }
+@media (max-width: 760px) { .ielts-targets { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ielts-calendar { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 400px) { .ielts-calendar { grid-template-columns: 1fr; } }
 .ielts-tracker {
   --ielts-ink: #283044;
   --ielts-muted: #7f8798;
