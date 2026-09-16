@@ -188,3 +188,571 @@
     padding: 0;
   }
 }
+
+/* IELTS learning tracker — only mounted on the shuoshuo page */
+.ielts-tracker {
+  --ielts-ink: #283044;
+  --ielts-muted: #7f8798;
+  --ielts-line: rgba(63, 73, 96, .11);
+  --ielts-blue: #6c8ff5;
+  --ielts-pink: #ef6d7a;
+  --ielts-soft-blue: #eef3ff;
+  --ielts-soft-pink: #fff0f2;
+  margin: 0 0 26px;
+  color: var(--ielts-ink);
+}
+
+[data-theme='dark'] .ielts-tracker {
+  --ielts-ink: #edf0f7;
+  --ielts-muted: #9ba3b5;
+  --ielts-line: rgba(255, 255, 255, .1);
+  --ielts-soft-blue: rgba(108, 143, 245, .16);
+  --ielts-soft-pink: rgba(239, 109, 122, .14);
+}
+
+.ielts-hero,
+.ielts-panel,
+.ielts-stat {
+  border: 1px solid var(--ielts-line);
+  background: var(--card-bg);
+  box-shadow: 0 12px 38px rgba(38, 46, 67, .06);
+}
+
+.ielts-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 158px;
+  padding: 32px 36px;
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+.ielts-hero::before,
+.ielts-hero::after {
+  position: absolute;
+  border-radius: 50%;
+  content: '';
+  pointer-events: none;
+}
+
+.ielts-hero::before {
+  width: 230px;
+  height: 230px;
+  right: -70px;
+  top: -115px;
+  background: radial-gradient(circle, rgba(108, 143, 245, .22), rgba(108, 143, 245, 0) 68%);
+}
+
+.ielts-hero::after {
+  width: 180px;
+  height: 180px;
+  right: 105px;
+  bottom: -125px;
+  background: radial-gradient(circle, rgba(239, 109, 122, .2), rgba(239, 109, 122, 0) 68%);
+}
+
+.ielts-eyebrow,
+.ielts-panel-heading span,
+.ielts-form-heading span {
+  color: var(--ielts-blue);
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .16em;
+}
+
+.ielts-hero h2 {
+  margin: 6px 0 4px;
+  color: var(--ielts-ink);
+  font-size: clamp(1.72rem, 4vw, 2.4rem);
+  line-height: 1.2;
+}
+
+.ielts-hero p {
+  margin: 0;
+  color: var(--ielts-muted);
+  font-size: .92rem;
+}
+
+.ielts-add-button,
+.ielts-primary-button {
+  position: relative;
+  z-index: 1;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--ielts-blue), #7e73e9);
+  box-shadow: 0 8px 22px rgba(108, 143, 245, .3);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.ielts-add-button {
+  padding: 12px 18px;
+}
+
+.ielts-add-button i {
+  margin-right: 6px;
+}
+
+.ielts-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.ielts-stat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 118px;
+  padding: 18px 20px;
+  border-radius: 16px;
+}
+
+.ielts-stat > span {
+  color: var(--ielts-muted);
+  font-size: .76rem;
+}
+
+.ielts-stat strong {
+  margin-top: 8px;
+  color: var(--ielts-ink);
+  font-size: 1.55rem;
+  line-height: 1.15;
+}
+
+.ielts-stat small {
+  margin-top: 5px;
+  color: var(--ielts-muted);
+  font-size: .67rem;
+}
+
+.ielts-goal-card {
+  background: linear-gradient(135deg, var(--ielts-soft-pink), var(--card-bg));
+}
+
+.ielts-goal-card strong {
+  color: var(--ielts-pink);
+}
+
+.ielts-goal-card button {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(239, 109, 122, .1);
+  color: var(--ielts-pink);
+  cursor: pointer;
+}
+
+.ielts-panel {
+  padding: 22px;
+  border-radius: 18px;
+}
+
+.ielts-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.ielts-panel-heading h3,
+.ielts-form-heading h3 {
+  margin: 2px 0 0;
+  color: var(--ielts-ink);
+  font-size: 1rem;
+}
+
+.ielts-chart-wrap {
+  position: relative;
+  min-height: 280px;
+}
+
+.ielts-chart {
+  display: block;
+}
+
+.ielts-chart-empty {
+  display: grid;
+  min-height: 280px;
+  place-items: center;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(108, 143, 245, .045), rgba(239, 109, 122, .045));
+  color: var(--ielts-muted);
+  font-size: .82rem;
+  text-align: center;
+}
+
+.ielts-chart-empty[hidden],
+.ielts-chart[hidden] {
+  display: none;
+}
+
+.ielts-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px 12px;
+}
+
+.ielts-legend span {
+  color: var(--ielts-muted);
+  font-size: .68rem;
+}
+
+.ielts-legend i {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 5px;
+  border-radius: 50%;
+}
+
+.ielts-lower-grid {
+  display: grid;
+  grid-template-columns: .9fr 1.4fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.ielts-advice-panel {
+  background: linear-gradient(145deg, var(--ielts-soft-blue), var(--card-bg) 60%);
+}
+
+.ielts-advice {
+  color: var(--ielts-ink);
+  font-size: .82rem;
+  line-height: 1.85;
+}
+
+.ielts-advice ul {
+  margin: 0;
+  padding-left: 1.15rem;
+}
+
+.ielts-advice li + li {
+  margin-top: 9px;
+}
+
+.ielts-advice small {
+  display: block;
+  margin-top: 15px;
+  color: var(--ielts-muted);
+  font-size: .65rem;
+}
+
+.ielts-icon-button,
+.ielts-text-button,
+.ielts-log-actions button,
+.ielts-form-heading button {
+  border: 0;
+  background: transparent;
+  color: var(--ielts-muted);
+  cursor: pointer;
+}
+
+.ielts-icon-button {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(108, 143, 245, .1);
+  color: var(--ielts-blue);
+}
+
+.ielts-icon-button.is-loading i {
+  animation: ielts-spin 1s linear infinite;
+}
+
+@keyframes ielts-spin { to { transform: rotate(360deg); } }
+
+.ielts-text-button {
+  color: var(--ielts-blue);
+  font-size: .72rem;
+}
+
+.ielts-records {
+  display: grid;
+  gap: 2px;
+}
+
+.ielts-log-item {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 68px;
+  padding: 9px 0;
+  border-top: 1px solid var(--ielts-line);
+}
+
+.ielts-log-item:first-child {
+  border-top: 0;
+}
+
+.ielts-log-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--ielts-muted);
+}
+
+.ielts-log-date strong {
+  color: var(--ielts-ink);
+  font-size: 1.05rem;
+}
+
+.ielts-log-date span {
+  font-size: .58rem;
+}
+
+.ielts-log-main {
+  min-width: 0;
+}
+
+.ielts-module {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(108, 143, 245, .12);
+  color: #6c8ff5;
+  font-size: .68rem;
+  font-weight: 700;
+}
+
+.ielts-module-1 { background: rgba(84, 184, 148, .12); color: #45a684; }
+.ielts-module-2 { background: rgba(239, 154, 88, .12); color: #df8846; }
+.ielts-module-3 { background: rgba(176, 122, 221, .12); color: #a56bd4; }
+
+.ielts-score {
+  margin-left: 8px;
+  color: var(--ielts-ink);
+  font-size: .86rem;
+}
+
+.ielts-log-main p,
+.ielts-log-main small {
+  display: block;
+  margin: 4px 0 0;
+  color: var(--ielts-muted);
+  font-size: .68rem;
+  line-height: 1.45;
+}
+
+.ielts-log-main small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ielts-log-actions {
+  display: flex;
+}
+
+.ielts-log-actions button {
+  width: 27px;
+  height: 27px;
+  font-size: .68rem;
+}
+
+.ielts-log-actions button:hover {
+  color: var(--ielts-pink);
+}
+
+.ielts-empty-log {
+  display: grid;
+  min-height: 170px;
+  place-items: center;
+  align-content: center;
+  color: var(--ielts-muted);
+  font-size: .78rem;
+  text-align: center;
+}
+
+.ielts-empty-log i {
+  color: var(--ielts-blue);
+  font-size: 1.45rem;
+}
+
+.ielts-empty-log p {
+  margin: 10px 0 0;
+}
+
+.ielts-dialog {
+  width: min(640px, calc(100vw - 28px));
+  max-height: calc(100vh - 32px);
+  padding: 0;
+  border: 0;
+  border-radius: 20px;
+  background: var(--card-bg);
+  color: var(--ielts-ink);
+  box-shadow: 0 24px 80px rgba(20, 26, 42, .3);
+}
+
+.ielts-dialog::backdrop {
+  background: rgba(21, 26, 38, .55);
+  backdrop-filter: blur(4px);
+}
+
+.ielts-form {
+  padding: 26px;
+}
+
+.ielts-form-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.ielts-form-heading button {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(120, 128, 148, .1);
+}
+
+.ielts-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.ielts-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.ielts-form label > span {
+  color: var(--ielts-muted);
+  font-size: .72rem;
+}
+
+.ielts-form input,
+.ielts-form select,
+.ielts-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--ielts-line);
+  border-radius: 10px;
+  outline: none;
+  background: rgba(128, 136, 155, .06);
+  color: var(--ielts-ink);
+  font: inherit;
+  font-size: .82rem;
+}
+
+.ielts-form input,
+.ielts-form select {
+  height: 42px;
+  padding: 0 11px;
+}
+
+.ielts-form textarea {
+  padding: 10px 11px;
+  resize: vertical;
+}
+
+.ielts-form input:focus,
+.ielts-form select:focus,
+.ielts-form textarea:focus {
+  border-color: var(--ielts-blue);
+  box-shadow: 0 0 0 3px rgba(108, 143, 245, .11);
+}
+
+.ielts-form-note {
+  grid-column: 1 / -1;
+}
+
+.ielts-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.ielts-form-actions button {
+  min-width: 90px;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.ielts-secondary-button {
+  border: 1px solid var(--ielts-line);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ielts-muted);
+}
+
+@media (max-width: 760px) {
+  .ielts-hero {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
+    padding: 26px 22px;
+  }
+
+  .ielts-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ielts-lower-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ielts-panel-heading {
+    align-items: flex-start;
+  }
+
+  .ielts-chart-panel .ielts-panel-heading {
+    flex-direction: column;
+  }
+
+  .ielts-legend {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 460px) {
+  .ielts-stat {
+    min-height: 102px;
+    padding: 15px;
+  }
+
+  .ielts-stat strong {
+    font-size: 1.25rem;
+  }
+
+  .ielts-panel {
+    padding: 17px;
+  }
+
+  .ielts-form {
+    padding: 20px 16px;
+  }
+
+  .ielts-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ielts-form-note {
+    grid-column: auto;
+  }
+
+  .ielts-log-item {
+    grid-template-columns: 42px 1fr;
+  }
+
+  .ielts-log-actions {
+    grid-column: 2;
+    justify-content: flex-end;
+  }
+}
