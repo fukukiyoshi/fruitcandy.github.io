@@ -190,7 +190,28 @@
 }
 
 /* IELTS learning tracker — only mounted on the shuoshuo page */
-.ielts-readonly { color: var(--ielts-muted); font-size: .8rem; }
+.ielts-goal-card { cursor: pointer; }
+.ielts-goal-card:focus-visible { outline: 2px solid var(--ielts-blue); }
+.ielts-goal-popover { position: absolute; top: 100%; left: 0; width: min(490px, calc(100vw - 80px)); padding-top: 8px; z-index: 20; visibility: hidden; opacity: 0; transform: translateY(-10px); transition: opacity .2s, transform .2s, visibility .2s; cursor: default; }
+.ielts-goal-card:hover, .ielts-goal-card:focus-within { z-index: 21; }
+.ielts-goal-card:hover .ielts-goal-popover, .ielts-goal-card:focus-within .ielts-goal-popover { visibility: visible; opacity: 1; transform: translateY(0); }
+.ielts-goal-popover .ielts-targets { grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; padding: 16px; border: 1px solid var(--ielts-line); border-radius: 16px; background: var(--card-bg); box-shadow: 0 16px 40px rgba(25,30,50,.18); }
+.ielts-goal-popover .ielts-stat { padding: 12px; min-height: 90px; }
+.ielts-goal-popover .ielts-stat strong { font-size: 1.2rem; color: var(--ielts-ink); }
+.ielts-calendar-selectors { display: flex; gap: 10px; flex-wrap: wrap; font-size: .78rem; }
+.ielts-tracker .ielts-calendar { display: block; }
+.ielts-tracker .ielts-heat-day { aspect-ratio: auto; min-height: 44px; border: 0; cursor: pointer; font: inherit; font-size: .85rem; }
+.ielts-tracker .ielts-heat-day::after { display: none; }
+.ielts-heat-day[aria-expanded="true"] { outline: 2px solid var(--ielts-blue); outline-offset: 1px; }
+.ielts-day-detail { margin-top: 18px; padding: 18px; border: 1px solid var(--ielts-line); border-radius: 14px; background: var(--ielts-soft-blue); animation: ielts-reveal .2s ease; }
+.ielts-day-detail[hidden] { display: none; }
+.ielts-day-record { padding: 12px 0; border-top: 1px solid var(--ielts-line); }
+.ielts-day-record p { margin: 6px 0; font-size: .85rem; }
+.ielts-day-record small { color: var(--ielts-muted); }
+.ielts-detail-close { border: 0; background: transparent; color: var(--ielts-ink); font-size: 24px; cursor: pointer; padding: 2px 10px; }
+.ielts-tracker .ielts-lower-grid { grid-template-columns: 1fr; }
+@keyframes ielts-reveal { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .ielts-goal-popover { transition: none; } .ielts-day-detail { animation: none; } }
 .ielts-targets { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 16px 0; }
 .ielts-caption { color: var(--ielts-muted); font-size: .75rem; line-height: 1.8; margin: 10px 0; }
 .ielts-targets > .ielts-caption { grid-column: 1 / -1; }

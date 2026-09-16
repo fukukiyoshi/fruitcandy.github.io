@@ -64,18 +64,16 @@
       '    <div>',
       '      <span class="ielts-eyebrow">IELTS STUDY LOG</span>',
       '      <h2>雅思学习站</h2>',
-      '      <p>今天的每一点练习，都在把目标变成坐标。</p>',
+      '      <p>今天的水果糖好好学英语了吗</p>',
       '    </div>',
-      '    <span class="ielts-readonly">学习足迹 · 公开展示</span>',
       '  </header>',
       '  <div class="ielts-stat-grid">',
-      '    <article class="ielts-stat ielts-goal-card"><span>目标分数</span><strong data-stat="goal">—</strong><small>总分目标</small></article>',
+      '    <article class="ielts-stat ielts-goal-card" tabindex="0" aria-label="目标分数及四科参考目标"><span>目标分数</span><strong data-stat="goal">—</strong><small>查看四科目标 ↗</small><div class="ielts-goal-popover"><div class="ielts-targets" data-targets></div></div></article>',
       '    <article class="ielts-stat"><span>最近测试</span><strong data-stat="latest">—</strong><small data-stat="latest-module">还没有分数记录</small></article>',
       '    <article class="ielts-stat"><span>累计学习</span><strong data-stat="minutes">0 分钟</strong><small data-stat="days">0 个学习日</small></article>',
       '    <article class="ielts-stat"><span>单词 / 套题</span><strong data-stat="practice">0 / 0</strong><small>累计完成</small></article>',
       '  </div>',
-      '  <div class="ielts-targets" data-targets></div>',
-      '  <div class="ielts-panel ielts-calendar-panel"><div class="ielts-panel-heading"><div><span>DAILY PRACTICE</span><h3>学习日历</h3></div><label>年份 <select class="ielts-year" aria-label="日历年份"></select></label></div><p data-calendar-summary></p><div class="ielts-calendar-scroll"><div class="ielts-calendar" data-calendar></div></div><div class="ielts-heat-legend"><span>未记录</span><i data-level="0"></i><i data-level="1"></i><span>1–29 分钟</span><i data-level="2"></i><span>30–59</span><i data-level="3"></i><span>60–119</span><i data-level="4"></i><span>≥120</span></div><p class="ielts-caption">同一天各模块时长相加；空白日期表示没有已发布的学习时长。</p></div>',
+      '  <div class="ielts-panel ielts-calendar-panel"><div class="ielts-panel-heading"><div><span>DAILY PRACTICE</span><h3>学习日历</h3></div><div class="ielts-calendar-selectors"><label>年份 <select class="ielts-year" aria-label="日历年份"></select></label><label>月份 <select class="ielts-month-select ielts-year" aria-label="日历月份"></select></label></div></div><p data-calendar-summary></p><div class="ielts-calendar-scroll"><div class="ielts-calendar" data-calendar></div></div><div class="ielts-heat-legend"><span>未记录</span><i data-level="0"></i><i data-level="1"></i><span>1–29 分钟</span><i data-level="2"></i><span>30–59</span><i data-level="3"></i><span>60–119</span><i data-level="4"></i><span>≥120</span></div><div class="ielts-day-detail" data-day-detail hidden></div></div>',
       '  <div class="ielts-panel ielts-chart-panel">',
       '    <div class="ielts-panel-heading"><div><span>成长轨迹</span><h3>模考分数趋势</h3></div><div class="ielts-legend"></div></div>',
       '    <div class="ielts-chart-wrap"><canvas class="ielts-chart" aria-label="雅思模考分数趋势图"></canvas><div class="ielts-chart-empty">记录一次带分数的练习后，这里会出现成长曲线。</div></div>',
@@ -84,10 +82,6 @@
       '    <div class="ielts-panel ielts-advice-panel">',
       '      <div class="ielts-panel-heading"><div><span>STUDY NOTES</span><h3>明日学习建议</h3></div></div>',
       '      <div class="ielts-advice" data-advice><p>添加学习记录后，我会根据你的投入与分数变化安排明天的练习。</p></div>',
-      '    </div>',
-      '    <div class="ielts-panel ielts-record-panel">',
-      '      <div class="ielts-panel-heading"><div><span>RECENT LOG</span><h3>最近记录</h3></div></div>',
-      '      <div class="ielts-records" data-records></div>',
       '    </div>',
       '  </div>',
       '</section>'
@@ -111,7 +105,6 @@
 
   function render() {
     renderStats()
-    renderRecords()
     requestAnimationFrame(drawChart)
     renderTargets()
     renderCalendar()
@@ -135,26 +128,33 @@
     root.querySelector('[data-stat="practice"]').textContent = totalWords + ' / ' + totalSets
   }
 
-  function renderRecords() {
-    var container = document.querySelector('[data-records]')
-    var records = sortedRecords().reverse().slice(0, 8)
-    if (!records.length) {
-      container.innerHTML = '<div class="ielts-empty-log"><i class="fa-regular fa-calendar-check"></i><p>第一条记录，会是这段旅程的起点。</p></div>'
-      return
-    }
-    container.innerHTML = records.map(function (record) {
-      var facts = []
-      if (record.minutes) facts.push(record.minutes + ' 分钟')
-      if (record.words) facts.push(record.words + ' 个单词')
-      if (record.sets) facts.push(record.sets + ' 套题')
-      return '<article class="ielts-log-item">' +
-        '<div class="ielts-log-date"><strong>' + escapeHtml(record.date.slice(8)) + '</strong><span>' + escapeHtml(record.date.slice(0, 7)) + '</span></div>' +
-        '<div class="ielts-log-main"><div><span class="ielts-module ielts-module-' + MODULES.indexOf(record.module) + '">' + escapeHtml(record.module) + '</span>' +
-        (record.score ? '<strong class="ielts-score">' + numberOrZero(record.score).toFixed(1) + '</strong>' : '') + '</div>' +
-        '<p>' + escapeHtml(facts.join(' · ') || '完成了一次学习') + '</p>' +
-        (record.note ? '<small>' + escapeHtml(record.note) + '</small>' : '') + '</div>' +
-        '</article>'
-    }).join('')
+  function showDay(date) {
+    var panel = document.querySelector('[data-day-detail]')
+    var selected = panel.dataset.date === date && !panel.hidden
+    document.querySelectorAll('.ielts-heat-day').forEach(function (cell) {
+      cell.setAttribute('aria-expanded', String(!selected && cell.dataset.date === date))
+    })
+    if (selected) { panel.hidden = true; return }
+    panel.dataset.date = date
+    var records = sortedRecords().filter(function (record) { return record.date === date })
+    panel.innerHTML = '<div class="ielts-panel-heading"><h3>' + escapeHtml(date) + ' · ' +
+      formatMinutes(dailyMinutes()[date] || 0) + '</h3><button type="button" class="ielts-detail-close" aria-label="关闭每日明细">×</button></div>' +
+      (records.length ? records.map(function (record) {
+        var facts = [formatMinutes(record.minutes)]
+        if (record.score != null) facts.push('得分 ' + numberOrZero(record.score).toFixed(1))
+        if (record.words) facts.push('单词 ' + record.words + ' 个')
+        if (record.sets) facts.push('套题 ' + record.sets + ' 套')
+        return '<article class="ielts-day-record"><span class="ielts-module ielts-module-' +
+          MODULES.indexOf(record.module) + '">' + escapeHtml(record.module) + '</span><p>' +
+          escapeHtml(facts.join(' · ')) + '</p>' +
+          (record.note ? '<small>' + escapeHtml(record.note) + '</small>' : '') + '</article>'
+      }).join('') : '<p>这一天还没有学习记录。</p>')
+    panel.hidden = false
+    panel.querySelector('button').addEventListener('click', function () {
+      showDay(date)
+      var cell = document.querySelector('[data-date="' + date + '"]')
+      if (cell) cell.focus()
+    })
   }
 
   function drawChart() {
@@ -287,15 +287,33 @@
   }
 
   function renderTargets() {
-    var scores = latestScores()
+    var scores = recentAverages()
     var ranges = targetRanges()
     document.querySelector('[data-targets]').innerHTML = ranges.map(function (target) {
       return '<article class="ielts-stat"><span>' + target.module + ' · 参考目标</span><strong>' +
-        target.low.toFixed(1) + '–' + target.high.toFixed(1) + '</strong><small>最近测试：' +
-        (scores[target.module] == null ? '暂无' : scores[target.module].toFixed(1)) + '</small></article>'
-    }).join('') + '<p class="ielts-caption">按听读较高、写说稳步达标的策略分配；范围下限组合平均为 ' +
-      (ranges.reduce(function (sum, target) { return sum + target.low }, 0) / 4).toFixed(1) +
-      '。这是备考目标，不是成绩预测；写作、口语尚无测试数据。<a href="https://ielts.org/take-a-test/your-results/ielts-scoring-in-detail" target="_blank" rel="noopener">总分计分规则</a></p>'
+        target.low.toFixed(1) + '–' + target.high.toFixed(1) + '</strong><small>近三天均分：' +
+        (scores[target.module] == null ? '暂无' : scores[target.module].toFixed(2)) + '</small></article>'
+    }).join('') + '<p class="ielts-caption">参考目标，非成绩预测。均分按今天及前两天的测试计算，无测试不计零分。</p>'
+  }
+
+  function chinaToday() {
+    var parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date())
+    var get = function (type) { return parts.find(function (part) { return part.type === type }).value }
+    return get('year') + '-' + get('month') + '-' + get('day')
+  }
+
+  function recentAverages() {
+    var end = chinaToday()
+    var start = new Date(end + 'T00:00:00Z')
+    start.setUTCDate(start.getUTCDate() - 2)
+    var cutoff = dateKey(start)
+    return MODULES.reduce(function (result, module) {
+      var samples = state.records.filter(function (r) {
+        return r.module === module && r.date >= cutoff && r.date <= end && r.score != null && Number.isFinite(Number(r.score))
+      })
+      result[module] = samples.length ? samples.reduce(function (sum, r) { return sum + Number(r.score) }, 0) / samples.length : null
+      return result
+    }, {})
   }
 
   function dateKey(date) { return date.toISOString().slice(0, 10) }
@@ -312,12 +330,24 @@
   }
 
   function setupCalendar() {
-    var currentYear = Number(new Intl.DateTimeFormat('en', { timeZone: 'Asia/Shanghai', year: 'numeric' }).format(new Date()))
+    var currentYear = Number(chinaToday().slice(0, 4))
     var years = Array.from(new Set([currentYear].concat(state.records.map(function (r) { return Number(r.date.slice(0, 4)) })))).sort(function (a, b) { return b - a })
     var select = document.querySelector('.ielts-year')
     select.innerHTML = years.map(function (year) { return '<option>' + year + '</option>' }).join('')
     select.value = String(currentYear)
     select.addEventListener('change', renderCalendar)
+    var monthSelect = document.querySelector('.ielts-month-select')
+    monthSelect.innerHTML = Array.from({ length: 12 }, function (_, i) { return '<option value="' + i + '">' + (i + 1) + '月</option>' }).join('')
+    monthSelect.value = String(Number(chinaToday().slice(5, 7)) - 1)
+    monthSelect.addEventListener('change', renderCalendar)
+    document.querySelector('[data-calendar]').addEventListener('click', function (event) {
+      var cell = event.target.closest('[data-date]')
+      if (cell) showDay(cell.dataset.date)
+    })
+    document.querySelector('.ielts-calendar-panel').addEventListener('keydown', function (event) {
+      var panel = document.querySelector('[data-day-detail]')
+      if (event.key === 'Escape' && !panel.hidden) showDay(panel.dataset.date)
+    })
   }
 
   function renderCalendar() {
@@ -325,7 +355,8 @@
     var totals = dailyMinutes(), minutes = 0, days = 0
     var weekdays = ['一', '二', '三', '四', '五', '六', '日']
     var html = ''
-    for (var month = 0; month < 12; month++) {
+    var month = Number(document.querySelector('.ielts-month-select').value)
+    {
       html += '<section class="ielts-month"><h4>' + (month + 1) + '月</h4><div class="ielts-month-grid">'
       html += weekdays.map(function (day) { return '<span class="ielts-weekday">' + day + '</span>' }).join('')
       var offset = (new Date(Date.UTC(year, month, 1)).getUTCDay() + 6) % 7
@@ -337,13 +368,14 @@
         minutes += value
         if (value > 0) days++
         var label = key + '：' + (value > 0 ? formatMinutes(value) : '未记录学习时长')
-        html += '<span class="ielts-heat-day" tabindex="0" data-date="' + key + '" data-level="' +
-          heatLevel(value) + '" data-tooltip="' + label + '" aria-label="' + label + '">' + day + '</span>'
+        html += '<button type="button" class="ielts-heat-day" aria-expanded="false" data-date="' + key + '" data-level="' +
+          heatLevel(value) + '" aria-label="' + label + '">' + day + '</button>'
       }
       html += '</div></section>'
     }
+    document.querySelector('[data-day-detail]').hidden = true
     document.querySelector('[data-calendar]').innerHTML = html
-    document.querySelector('[data-calendar-summary]').textContent = year + ' 年 · ' + days + ' 个学习日 · ' + formatMinutes(minutes)
+    document.querySelector('[data-calendar-summary]').textContent = year + ' 年 ' + (month + 1) + ' 月 · ' + days + ' 个学习日 · ' + formatMinutes(minutes)
   }
 
   function debounce(fn, wait) {
