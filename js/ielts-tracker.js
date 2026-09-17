@@ -325,8 +325,14 @@
     }, {})
   }
 
-  function heatLevel(minutes) {
-    return minutes >= 120 ? 4 : minutes >= 60 ? 3 : minutes >= 30 ? 2 : minutes > 0 ? 1 : 0
+  function heatColor(minutes) {
+    var ratio = Math.min(Math.max(numberOrZero(minutes), 0), 120) / 120
+    var start = [238, 242, 247]
+    var end = [48, 89, 174]
+    var rgb = start.map(function (channel, index) {
+      return Math.round(channel + (end[index] - channel) * ratio)
+    })
+    return { background: 'rgb(' + rgb.join(',') + ')', foreground: ratio >= 0.58 ? '#fff' : '#24374f' }
   }
 
   function setupCalendar() {
@@ -368,8 +374,10 @@
         minutes += value
         if (value > 0) days++
         var label = key + '：' + (value > 0 ? formatMinutes(value) : '未记录学习时长')
-        html += '<button type="button" class="ielts-heat-day" aria-expanded="false" data-date="' + key + '" data-level="' +
-          heatLevel(value) + '" aria-label="' + label + '">' + day + '</button>'
+        var color = heatColor(value)
+        html += '<button type="button" class="ielts-heat-day" aria-expanded="false" data-date="' + key +
+          '" style="--heat-color:' + color.background + ';--heat-text:' + color.foreground +
+          '" aria-label="' + label + '">' + day + '</button>'
       }
       html += '</div></section>'
     }

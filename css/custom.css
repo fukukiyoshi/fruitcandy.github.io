@@ -221,17 +221,13 @@
 .ielts-month h4 { margin: 8px 0; color: var(--ielts-ink); }
 .ielts-month-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
 .ielts-weekday { text-align: center; color: var(--ielts-muted); font-size: .65rem; }
-.ielts-heat-day { position: relative; display: grid; place-items: center; aspect-ratio: 1; min-height: 20px; border-radius: 4px; font-size: .65rem; background: rgba(128,136,155,.12); color: var(--ielts-ink); }
-.ielts-tracker [data-level="1"] { background: #d6e7fa; color: #24374f; }
-.ielts-tracker [data-level="2"] { background: #9fc3f1; color: #192e48; }
-.ielts-tracker [data-level="3"] { background: #558cdf; color: #fff; }
-.ielts-tracker [data-level="4"] { background: #3059ae; color: #fff; }
+.ielts-heat-day { position: relative; display: grid; place-items: center; aspect-ratio: 1; min-height: 20px; border-radius: 4px; font-size: .65rem; background: var(--heat-color, #eef2f7); color: var(--heat-text, #24374f); }
 .ielts-heat-day:hover::after, .ielts-heat-day:focus::after { content: attr(data-tooltip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); z-index: 5; width: 170px; padding: 7px; border-radius: 6px; background: #243044; color: #fff; font-size: 11px; text-align: center; pointer-events: none; }
 .ielts-heat-day:nth-child(7n + 1)::after { left: 0; transform: none; }
 .ielts-heat-day:nth-child(7n)::after { left: auto; right: 0; transform: none; }
 .ielts-heat-day:focus-visible { outline: 2px solid var(--ielts-blue); outline-offset: 2px; }
 .ielts-heat-legend { display: flex; gap: 8px; align-items: center; margin-top: 18px; font-size: .65rem; color: var(--ielts-muted); }
-.ielts-heat-gradient { display: block; flex: 0 1 210px; height: 10px; border-radius: 999px; background: linear-gradient(90deg, rgba(128,136,155,.12), #d6e7fa 18%, #9fc3f1 42%, #558cdf 70%, #3059ae); }
+.ielts-heat-gradient { display: block; flex: 0 1 210px; height: 10px; border-radius: 999px; background: linear-gradient(90deg, #eef2f7, #3059ae); }
 .ielts-tracker .ielts-log-item { grid-template-columns: 48px 1fr; }
 @media (max-width: 760px) { .ielts-targets { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ielts-calendar { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 400px) { .ielts-calendar { grid-template-columns: 1fr; } }
