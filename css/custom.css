@@ -230,8 +230,8 @@
 .ielts-heat-day:nth-child(7n + 1)::after { left: 0; transform: none; }
 .ielts-heat-day:nth-child(7n)::after { left: auto; right: 0; transform: none; }
 .ielts-heat-day:focus-visible { outline: 2px solid var(--ielts-blue); outline-offset: 2px; }
-.ielts-heat-legend { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 18px; font-size: .65rem; color: var(--ielts-muted); }
-.ielts-heat-legend i { width: 14px; height: 14px; border-radius: 3px; background: rgba(128,136,155,.12); }
+.ielts-heat-legend { display: flex; gap: 8px; align-items: center; margin-top: 18px; font-size: .65rem; color: var(--ielts-muted); }
+.ielts-heat-gradient { display: block; flex: 0 1 210px; height: 10px; border-radius: 999px; background: linear-gradient(90deg, rgba(128,136,155,.12), #d6e7fa 18%, #9fc3f1 42%, #558cdf 70%, #3059ae); }
 .ielts-tracker .ielts-log-item { grid-template-columns: 48px 1fr; }
 @media (max-width: 760px) { .ielts-targets { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ielts-calendar { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 400px) { .ielts-calendar { grid-template-columns: 1fr; } }
