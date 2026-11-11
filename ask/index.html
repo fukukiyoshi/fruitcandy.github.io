@@ -1,0 +1,251 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>匿名提问箱 | 欢迎来到水果糖的世界🍬</title><meta name="author" content="水果糖🍬"><meta name="copyright" content="水果糖🍬"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="ANONYMOUS LETTERS     没有人知道你是谁，所以不妨问得真一点。     这里的每段对话都只属于你和我。所有人可以旁听，但没有人能够插话。            向我提问       抽一个问题                                 WRITE TO ME         向我提问              不知道怎么开口？">
+<meta property="og:type" content="website">
+<meta property="og:title" content="匿名提问箱">
+<meta property="og:url" content="https://www.fruitcandy.cn/ask/index.html">
+<meta property="og:site_name" content="欢迎来到水果糖的世界🍬">
+<meta property="og:description" content="ANONYMOUS LETTERS     没有人知道你是谁，所以不妨问得真一点。     这里的每段对话都只属于你和我。所有人可以旁听，但没有人能够插话。            向我提问       抽一个问题                                 WRITE TO ME         向我提问              不知道怎么开口？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.fruitcandy.cn/img/fruitcandy.jpg">
+<meta property="article:published_time" content="2026-11-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-11-03T06:47:59.941Z">
+<meta property="article:author" content="水果糖🍬">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.fruitcandy.cn/img/fruitcandy.jpg"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://www.fruitcandy.cn/ask/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '匿名提问箱',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/askbox.css"><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/fruitcandy.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">9</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-book-open"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-list"></i><span> 全部文章</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 主题分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-seedling"></i><span> 生活</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/weekly/"><i class="fa-fw fas fa-pen-nib"></i><span> 周记</span></a></li><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fas fa-comment-dots"></i><span> 碎碎念</span></a></li><li><a class="site-page child" href="/daily/"><i class="fa-fw fas fa-images"></i><span> 日常图库</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/works/"><i class="fa-fw fas fa-palette"></i><span> 作品</span></a></div><div class="menus_item"><a class="site-page" href="/ask/"><i class="fa-fw fas fa-envelope-open-text"></i><span> 提问箱</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-bookmark"></i><span> 收藏</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">欢迎来到水果糖的世界🍬</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-book-open"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-list"></i><span> 全部文章</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 主题分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-seedling"></i><span> 生活</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/weekly/"><i class="fa-fw fas fa-pen-nib"></i><span> 周记</span></a></li><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fas fa-comment-dots"></i><span> 碎碎念</span></a></li><li><a class="site-page child" href="/daily/"><i class="fa-fw fas fa-images"></i><span> 日常图库</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/works/"><i class="fa-fw fas fa-palette"></i><span> 作品</span></a></div><div class="menus_item"><a class="site-page" href="/ask/"><i class="fa-fw fas fa-envelope-open-text"></i><span> 提问箱</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-bookmark"></i><span> 收藏</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><h1 class="title-seo">匿名提问箱</h1></header><main class="layout hide-aside" id="content-inner"><div id="page"><div class="page-title">匿名提问箱</div><div class="container" id="article-container"><div id="askbox-app" class="askbox" aria-live="polite">
+  <header class="askbox-hero">
+    <p class="askbox-eyebrow">ANONYMOUS LETTERS</p>
+    <h1>没有人知道你是谁，<br>所以不妨问得真一点。</h1>
+    <p>这里的每段对话都只属于你和我。所有人可以旁听，但没有人能够插话。</p>
+    <div class="askbox-hero-actions">
+      <a class="askbox-button askbox-button-primary" href="#askbox-compose">向我提问</a>
+      <button class="askbox-button askbox-button-quiet" id="askbox-random" type="button">抽一个问题</button>
+    </div>
+  </header>
+
+  <section class="askbox-panel askbox-compose" id="askbox-compose">
+    <div class="askbox-section-heading">
+      <div>
+        <span>WRITE TO ME</span>
+        <h2>向我提问</h2>
+      </div>
+      <button class="askbox-text-button" id="askbox-prompts-toggle" type="button">不知道怎么开口？</button>
+    </div>
+
+<pre><code>&lt;div class=&quot;askbox-prompts&quot; id=&quot;askbox-prompts&quot; hidden&gt;&lt;/div&gt;
+
+&lt;form id=&quot;askbox-form&quot;&gt;
+  &lt;div class=&quot;askbox-identity-grid&quot;&gt;
+    &lt;label class=&quot;askbox-avatar-field&quot;&gt;
+      &lt;input id=&quot;askbox-avatar&quot; name=&quot;avatar&quot; type=&quot;file&quot; accept=&quot;image/png,image/jpeg,image/webp&quot; hidden&gt;
+      &lt;span class=&quot;askbox-avatar-preview&quot; id=&quot;askbox-avatar-preview&quot; aria-hidden=&quot;true&quot;&gt;+&lt;/span&gt;
+      &lt;span&gt;上传头像&lt;/span&gt;
+    &lt;/label&gt;
+    &lt;div class=&quot;askbox-fields&quot;&gt;
+      &lt;label&gt;怎么称呼你
+        &lt;input name=&quot;nickname&quot; maxlength=&quot;24&quot; autocomplete=&quot;nickname&quot; placeholder=&quot;一个只属于此刻的名字&quot; required&gt;
+      &lt;/label&gt;
+      &lt;label&gt;回复提醒 &lt;small&gt;选填，不会公开&lt;/small&gt;
+        &lt;input name=&quot;email&quot; type=&quot;email&quot; maxlength=&quot;160&quot; autocomplete=&quot;email&quot; placeholder=&quot;your@email.com&quot;&gt;
+      &lt;/label&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;label class=&quot;askbox-message-field&quot;&gt;你想问什么？
+    &lt;textarea id=&quot;askbox-question&quot; name=&quot;body&quot; minlength=&quot;2&quot; maxlength=&quot;2000&quot; rows=&quot;6&quot; placeholder=&quot;可以直接一点，也可以慢慢说。&quot; required&gt;&lt;/textarea&gt;
+  &lt;/label&gt;
+  &lt;div class=&quot;askbox-form-footer&quot;&gt;
+    &lt;p&gt;提交后立即公开。只有你和我能继续这段对话。&lt;/p&gt;
+    &lt;button class=&quot;askbox-button askbox-button-primary&quot; type=&quot;submit&quot;&gt;匿名寄出&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;p class=&quot;askbox-form-status&quot; id=&quot;askbox-form-status&quot; role=&quot;status&quot;&gt;&lt;/p&gt;
+&lt;/form&gt;
+</code></pre>
+  </section>
+
+  <section class="askbox-letters" aria-labelledby="askbox-letters-title">
+    <div class="askbox-section-heading">
+      <div>
+        <span>OPEN LETTERS</span>
+        <h2 id="askbox-letters-title">公开对话</h2>
+      </div>
+      <button class="askbox-text-button" id="askbox-admin" type="button">站主入口</button>
+    </div>
+    <p class="askbox-list-intro">你可以旁听每一封来信，但无法进入不属于你的对话。</p>
+    <div id="askbox-list" class="askbox-list"></div>
+    <button class="askbox-button askbox-button-quiet askbox-more" id="askbox-more" type="button" hidden>再看一些</button>
+  </section>
+</div>
+</div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 水果糖🍬</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><script src="/js/custom.js"></script><script src="/js/ielts-tracker.js"></script><script src="/js/askbox.js"></script><script async data-pjax src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
